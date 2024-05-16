@@ -84,9 +84,18 @@ void main() async {
     showNotification(flutterLocalNotificationsPlugin, message.notification!);
   });
 
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   runApp(MyApp());
   initializeNotifications(flutterLocalNotificationsPlugin);
   configureNotifications(flutterLocalNotificationsPlugin);
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
 }
 
 void initializeNotifications(
